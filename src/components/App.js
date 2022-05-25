@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Clock from './Clock';
+import Clock from './Clock.jsx';
 
 
 class App extends Component {
@@ -8,6 +8,7 @@ class App extends Component {
     super(props)
     // define a state
     this.state = {latitude: null, errorMessage: ''}
+    console.log("CONSTRUCTOR IS RUNNING")
 
     // api call is made asynchronously & latitude value is null
     // once it is completed, the latitude value changes
@@ -16,17 +17,43 @@ class App extends Component {
       position => this.setState({latitude: position.coords.latitude}),
       error => this.setState({errorMessage: error.message})
       )
+   
+  }
 
+    isitWarm() {
+      console.log("IS IT WARM")
+      const {latitude} = this.state
+      const month = new Date().getMonth()
+
+      // return true if, where the user is is calculated to be: 
+        // between May and September and in the Northern hemisphere, OR
+        // between October and April and in the Southern Hemisphere, OR 
+        // at the equator 
+      return (((month > 4 && month <= 9) && latitude > 0) || ((month <= 4 && month > 9) && latitude > 0) || latitude === 0) ? true : false
   }
-  render(){
-    const {latitude, errorMessage} = this.state
-    return (
-    <div>
-      <h1>{latitude}</h1>
-        {errorMessage || <Clock date={new Date()}/>}
-    </div>
-    )
+
+    getClockIcon() {
+      if (this.isItWarm()) {
+        return  "summer.png" 
+      } 
+      return "winter.png"
   }
+
+
+    render(){
+      const {latitude, errorMessage} = this.state
+      return (
+      <div>
+        <h1>{latitude}</h1>
+          {errorMessage ||
+            <Clock 
+              date={new Date()}
+              icon={latitude ? this.getClockIcon() : null }
+            />
+          }
+      </div>
+      )
+    }
 }
 
 export default App;

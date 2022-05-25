@@ -20,5 +20,5 @@ A single tweet is also a component, which incporates the three core features of 
 Each time a State value is updated, it triggers the page to re-render. 
 React is smart--and so the entire page does not refresh, however only the part of the component that is changed re-renders. (e.g. the seconds hand of the Clock)
 
-The React.js [docs]('https://reactjs.org/docs/state-and-lifecycle.html') do a great job of explaining this. 
+The React.js [docs](https://reactjs.org/docs/state-and-lifecycle.html) do a great job of explaining this. 
 
