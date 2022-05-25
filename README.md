@@ -22,3 +22,15 @@ React is smart--and so the entire page does not refresh, however only the part o
 
 The React.js [docs](https://reactjs.org/docs/state-and-lifecycle.html) do a great job of explaining this. 
 
+## What are Lifecycle Methods?
+There are three basic stages of the lifecycle of a component. Each of these stages has various lifecycle methods available to them. 
+1. Mounting: `componentDidMount`
+    - This method runs after the first render. 
+    - This is the best time to run an API call, so you don't slow down your webpage. 
+2. Updating: `componentDidUpdate`
+    - This method runs after subsequent renders, rovided prevState is differented to the newState -- otherwise it should not run. 
+    - If there is any repetitive tasks, this is the best place to do that (e.g. setInterval) 
+3. Unmounted: `componentWillUnmount`
+    - This method runs towards the end of the component lifecycle.
+    - Best place to clear any background task running for the component (e.g. clearInterval)
+

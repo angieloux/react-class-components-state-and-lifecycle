@@ -7,21 +7,11 @@ class App extends Component {
   constructor(props) {
     super(props)
     // define a state
-    this.state = {latitude: null, errorMessage: ''}
-    console.log("CONSTRUCTOR IS RUNNING")
+    this.state = {latitude: null, errorMessage: '', date: new Date()}
+    console.log("1. CONSTRUCTOR RUNS FIRST")
+  } 
 
-    // api call is made asynchronously & latitude value is null
-    // once it is completed, the latitude value changes
-    // because the state has now changed, the page will re-render with the new latitude value
-    window.navigator.geolocation.getCurrentPosition(
-      position => this.setState({latitude: position.coords.latitude}),
-      error => this.setState({errorMessage: error.message})
-      )
-   
-  }
-
-    isitWarm() {
-      console.log("IS IT WARM")
+  isitWarm() {
       const {latitude} = this.state
       const month = new Date().getMonth()
 
@@ -39,15 +29,46 @@ class App extends Component {
       return "winter.png"
   }
 
+  tick() {
+    this.setState({date: new Date()})
+  }
+
+  componentDidMount() {
+    console.log("3. componentDidMount runs after first render")
+
+    // api call is made asynchronously & latitude value is null
+    // once it is completed, the latitude value changes
+    // because the state has now changed, the page will re-render with the new latitude value
+    window.navigator.geolocation.getCurrentPosition(
+      position => this.setState({latitude: position.coords.latitude}),
+      error => this.setState({errorMessage: error.message})
+      )
+     
+  }
+
+  componentDidUpdate(prevState) {
+    console.log("4. componentDidUpdate runs after subsequent renders")
+
+    if (prevState.date !== this.state.date) {
+      this.timerId = setInterval(() => this.tick(), 1000)
+    }
+  }
+
+  componentWillUnmount() {
+    console.log("5. componentWillUnmount runs after first render")
+    clearInterval(this.timerId)
+
+  }
 
     render(){
-      const {latitude, errorMessage} = this.state
+      console.log("2. RENDER RUNS SECOND")
+      const {latitude, errorMessage, date} = this.state
       return (
       <div>
         <h1>{latitude}</h1>
           {errorMessage ||
             <Clock 
-              date={new Date()}
+              date={date}
               icon={latitude ? this.getClockIcon() : null }
             />
           }

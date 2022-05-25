@@ -1,7 +1,7 @@
 import React from 'react'
 import '../styles/clock.css'
 
-const Clock = (props) => {
+const Clock = props => {
 
     const {date} = props
     const seconds = date.getSeconds()
